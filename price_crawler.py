@@ -10,13 +10,13 @@ import requests
 # days = no of days.
 
 def get_google_finance_intraday(ticker, period=60, days=1):
-    
+
 
     url = 'https://finance.google.com/finance/getprices' \
           '?i={period}&p={days}d&f=d,o,h,l,c,v&df=cpct&q={ticker}'.format(ticker=ticker,
                                                                           period=period,
                                                                           days=days)
-    
+
     page = requests.get(url)
     reader = csv.reader(page.text.splitlines())
     columns = ['Open', 'High', 'Low', 'Close', 'Volume']
@@ -35,34 +35,36 @@ def get_google_finance_intraday(ticker, period=60, days=1):
                             columns=columns)
     else:
         return pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'))
-        
-        
 
 
-# the companies we are considering to extract the data is in the list 
+
+
+# the companies we are considering to extract the data is in the list
 
 
 List = ['AABA','AMC','AMD','BN','GOOG','GPS','HTZ','NTDOY','PYPL','WFC']
 
-# a for loop to get theREAL TIME stock data of each company in the list ,and 
+# a for loop to get the REAL TIME stock data of each company in the list ,and
 # saving it in the csv file.
 
+print("Generating Real Time Data:\n")
 for i in List:
     print(i)
     df = (get_google_finance_intraday(i, period=60, days=1))
-    df.to_csv(str(i))
+    df.to_csv("./Real/" + str(i) + "_real.csv")
     #print(df)
- 
-# a for loop to get the HISTORICAL DATA  stock data of each company in the list ,and 
+
+# a for loop to get the HISTORICAL DATA  stock data of each company in the list ,and
 # saving it in the csv file.
 
+print("\nGenerating Historical Data:\n")
 for i in List:
     print(i)
     df = (get_google_finance_intraday(i, period=60*60*24, days=365))
-    df.to_csv(str(i))
-    print(df)
-   
-'''    
+    df.to_csv("./Hist/" + str(i) + "_hist.csv")
+    #print(df)
+
+'''
 #############  to include the ticker column ############
 for i in List:
     print(i)
@@ -71,4 +73,3 @@ for i in List:
     df.to_csv(str(i))
     print(df)
 '''
-
