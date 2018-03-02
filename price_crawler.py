@@ -31,10 +31,13 @@ def get_google_finance_intraday(ticker, period=60, days=1):
                 times.append(start+datetime.timedelta(seconds=period*int(row[0])))
             rows.append(map(float, row[1:]))
     if len(rows):
-        return pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'),
-                            columns=columns)
+        result = pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'), columns=columns)
+        result.insert(0, 'Ticker', ticker)
+        return result
     else:
-        return pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'))
+        result = pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'))
+        result.insert(0, 'Ticker', ticker)
+        return result
 
 
 
@@ -60,16 +63,6 @@ for i in List:
 print("\nGenerating Historical Data:\n")
 for i in List:
     print(i)
-    df = (get_google_finance_intraday(i, period=60*60*24, days=365))
+    df = (get_google_finance_intraday(i, period=60*60*24, days=30))
     df.to_csv("./Hist/" + str(i) + "_hist.csv")
     #print(df)
-
-'''
-#############  to include the ticker column ############
-for i in List:
-    print(i)
-    df = (get_google_finance_intraday(i, period=60, days=1))
-    df.insert(0, 'Ticker', i, allow_duplicates=True)
-    df.to_csv(str(i))
-    print(df)
-'''
