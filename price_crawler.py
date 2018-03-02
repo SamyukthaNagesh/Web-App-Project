@@ -52,7 +52,7 @@ List = ['AABA','AMC','AMD','BN','GOOG','GPS','HTZ','NTDOY','PYPL','WFC']
 
 print("Generating Real Time Data:\n")
 for i in List:
-    print(i)
+    #print(i)
     df = (get_google_finance_intraday(i, period=60, days=1))
     df.to_csv("./Real/" + str(i) + "_real.csv")
     #print(df)
@@ -62,7 +62,7 @@ for i in List:
 
 print("\nGenerating Historical Data:\n")
 for i in List:
-    print(i)
+    #print(i)
     df = (get_google_finance_intraday(i, period=60*60*24, days=30))
     df.to_csv("./Hist/" + str(i) + "_hist.csv")
     #print(df)
