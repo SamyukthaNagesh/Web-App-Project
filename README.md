@@ -7,7 +7,7 @@ Interested Stocks:
  ['AABA','AMC','AMD','BN','GOOG','GPS','HTZ','NTDOY','PYPL','WFC']
 
 Requirements:
-    * Python 2.7
+    * Python 3.6
     * Pandas
 
 To run the price_crawler:
