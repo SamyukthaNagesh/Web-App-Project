@@ -1,7 +1,7 @@
 import csv
 import datetime
 import re
-
+import io
 import pandas as pd
 import requests
 
@@ -54,15 +54,20 @@ print("Generating Real Time Data:\n")
 for i in List:
     #print(i)
     df = (get_google_finance_intraday(i, period=60, days=1))
-    df.to_csv("./Real/" + str(i) + "_real.csv")
+    df.to_csv(str(i) + '_real.csv')
     #print(df)
 
 # a for loop to get the HISTORICAL DATA  stock data of each company in the list ,and
 # saving it in the csv file.
 
-print("\nGenerating Historical Data:\n")
+print("Generating Historical Time Data:\n")
+
+import datetime
+now = datetime.datetime.now()
+
 for i in List:
     #print(i)
-    df = (get_google_finance_intraday(i, period=60*60*24, days=30))
-    df.to_csv("./Hist/" + str(i) + "_hist.csv")
-    #print(df)
+    df = "http://finance.google.com/finance/historical?q="+str(i)+"&startdate= "+ str(now.month) + "2017&enddate= " + str(now.month) +"2018&num=200&output=csv"
+    raw_response = requests.get(df).content
+    stock_data = pd.read_csv(io.StringIO(raw_response.decode('utf-8')))
+    stock_data.to_csv(str(i)+'_hist.csv',index=False)
